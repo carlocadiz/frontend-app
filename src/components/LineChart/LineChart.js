@@ -4,8 +4,13 @@ import { Line } from 'react-chartjs-2';
 import './LineChart.scss';
 
 class LineChart extends Component {
+    constructor(props){
+    super(props);
+    }
     render(){
+      //  console.log('chart', this.props.dailyRegistered)
         let data = this.getData();
+        console.log('data',data)
         return (
             <div className="line-chart-container">
                 <div className="line-chart-wrapper">
@@ -19,8 +24,10 @@ class LineChart extends Component {
                         </div>
                     </div>
                     <div><Line
+
                         data={data}
                         height={100}
+
                     />
                     </div>
                 </div>
@@ -32,7 +39,8 @@ class LineChart extends Component {
     getData(){
         return {
             datasets: [{
-                data: []
+                label: 'users',
+                data: this.props.dailyRegistered
             }]
         };
     }
