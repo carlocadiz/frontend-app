@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import './Stats.scss';
 
-import { LeftSidebar, Footer, ChartTable, DoughnutChart, TransactionTable, TotalUsers, LineChart } from './../../components';
+import { LeftSidebar, Footer, ChartTable, DoughnutChart, TransactionHistory, TotalUsers, LineChart } from './../../components';
 
 class Stats extends Component{
     constructor(){
     super();
     this.state = {
       totalUsers: 0,
-      dailyRegistered: []
+      dailyRegistered: [],
+      transactionHistory: []
     }
 }
 
@@ -35,6 +36,16 @@ class Stats extends Component{
                     }
                 })
             })})
+
+        fetch('http://178.128.233.31/backend/accounts/transaction_history', {
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              "account_id":2
+            })
+          })
+            .then(response => response.json())
+            .then(data => { this.setState({transactionHistory: data.transaction_history})})
     }
 
 
@@ -50,7 +61,7 @@ class Stats extends Component{
                 <div className="content-wrapper" id="content-div">
                    <div className="totalusers-container"><TotalUsers total={this.state.totalUsers}/></div>
                    <div className="graph-container"><LineChart dailyRegistered ={this.state.dailyRegistered} /></div>
-                   <div className="table-container"><TransactionTable /></div>
+                   <div className="table-container"><TransactionHistory  transactionHistory= {this.state.transactionHistory}  s/></div>
                     <div className="overview-container">
                         <div className="overview-table"><ChartTable/></div>
                         <div className="overview-graph"><DoughnutChart /></div>
